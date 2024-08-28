@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { RequestHandler } from 'express';
 
 export default interface IValidate {
     (...params: Array<string | {

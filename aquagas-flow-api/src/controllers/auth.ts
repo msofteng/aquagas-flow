@@ -19,10 +19,10 @@ export default class AuthController implements IController {
         });
         
         return res.status(HttpStatusCodes.OK).end();
-    }
+    };
     
     logout = (_: IReq, res: IRes) => {
         SessionUtil.clearCookie(res);
         return res.status(HttpStatusCodes.OK).end();
-    }
+    };
 }

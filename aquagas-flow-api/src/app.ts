@@ -64,8 +64,7 @@ export default class App {
         this.app.use((
             err: Error,
             _: Request,
-            res: Response,
-            _next: NextFunction
+            res: Response
         ) => {
             if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
                 logger.err(err, true);
@@ -114,10 +113,3 @@ export default class App {
         });
     }
 }
-
-// import server from './server';
-
-// const SERVER_START_MSG = ('Express server started on port: ' +
-//     EnvVars.Port.toString());
-
-// server.listen(EnvVars.Port, () => logger.info(SERVER_START_MSG));

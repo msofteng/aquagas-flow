@@ -38,48 +38,48 @@ describe('AuthRouter', () => {
 
         it(`should return a response with a status of "${HttpStatusCodes.OK}" ` +
             'and a cookie with a jwt if the login was successful.', done => {
-                const pwdHash = PwdUtil.hashSync(LoginCreds.password),
-                    loginUser = User.new('john smith', LoginCreds.email, new Date(),
-                        UserRoles.Standard, pwdHash);
+            const pwdHash = PwdUtil.hashSync(LoginCreds.password),
+                loginUser = User.new('john smith', LoginCreds.email, new Date(),
+                    UserRoles.Standard, pwdHash);
 
-                spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
+            spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
 
-                callApi(LoginCreds, res => {
-                    expect(res.status).toBe(HttpStatusCodes.OK);
-                    const cookie = res.headers['set-cookie'][0];
-                    expect(cookie).toContain(EnvVars.CookieProps.Key);
-                    done();
-                });
+            callApi(LoginCreds, res => {
+                expect(res.status).toBe(HttpStatusCodes.OK);
+                const cookie = res.headers['set-cookie'][0];
+                expect(cookie).toContain(EnvVars.CookieProps.Key);
+                done();
             });
+        });
 
         it('should return a response with a status of ' +
             `"${HttpStatusCodes.UNAUTHORIZED}" and a json with an error message of ` +
             `"${EMAIL_NOT_FOUND_ERR}" if the email was not found.`, done => {
 
-                spyOn(UserRepo, 'getOne').and.resolveTo(null);
+            spyOn(UserRepo, 'getOne').and.resolveTo(null);
 
-                callApi(LoginCreds, res => {
-                    expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
-                    expect(res.body.error).toBe(undefined);
-                    done();
-                });
+            callApi(LoginCreds, res => {
+                expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+                expect(res.body.error).toBe(undefined);
+                done();
             });
+        });
 
         it('should return a response with a status of ' +
             `"${HttpStatusCodes.UNAUTHORIZED}" and a json with the error ` +
             `"${Errors.Unauth}" if the password failed.`, done => {
-                const pwdHash = PwdUtil.hashSync('bad password'),
-                    loginUser = User.new('john smith', LoginCreds.email, new Date(),
-                        UserRoles.Standard, pwdHash);
+            const pwdHash = PwdUtil.hashSync('bad password'),
+                loginUser = User.new('john smith', LoginCreds.email, new Date(),
+                    UserRoles.Standard, pwdHash);
 
-                spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
+            spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
 
-                callApi(LoginCreds, res => {
-                    expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
-                    expect(res.body.error).toBe(undefined);
-                    done();
-                });
+            callApi(LoginCreds, res => {
+                expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+                expect(res.body.error).toBe(undefined);
+                done();
             });
+        });
     });
 
     describe(`"GET:${Paths.Auth.Logout}"`, () => {

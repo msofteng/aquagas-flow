@@ -42,15 +42,15 @@ describe('UserRouter', () => {
 
         it('should return a JSON object with all the users and a status code ' +
             `of "${HttpStatusCodes.OK}" if the request was successful.`, done => {
-                const data = getDummyUsers();
-                spyOn(UserRepo, 'getAll').and.resolveTo(data);
+            const data = getDummyUsers();
+            spyOn(UserRepo, 'getAll').and.resolveTo(data);
 
-                api(res => {
-                    expect(res.status).toBe(HttpStatusCodes.OK);
-                    expect(res.body).toEqual({ users: data });
-                    done();
-                });
+            api(res => {
+                expect(res.status).toBe(HttpStatusCodes.OK);
+                expect(res.body).toEqual({ users: data });
+                done();
             });
+        });
     });
 
     describe(`"POST:${Paths.Users.Add}"`, () => {
@@ -65,23 +65,23 @@ describe('UserRouter', () => {
 
         it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` +
             'request was successful.', done => {
-                spyOn(UserRepo, 'add').and.resolveTo();
+            spyOn(UserRepo, 'add').and.resolveTo();
 
-                callApi(DUMMY_USER, res => {
-                    expect(res.status).toBe(HttpStatusCodes.CREATED);
-                    done();
-                });
+            callApi(DUMMY_USER, res => {
+                expect(res.status).toBe(HttpStatusCodes.CREATED);
+                done();
             });
+        });
 
         it(`should return a JSON object with an error message of "${ERROR_MSG}" ` +
             `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` +
             'param was missing.', done => {
-                callApi(null, res => {
-                    expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-                    expect(res.body.error).toBe(undefined);
-                    done();
-                });
+            callApi(null, res => {
+                expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
+                expect(res.body.error).toBe(undefined);
+                done();
             });
+        });
     });
 
     describe(`"PUT:${Paths.Users.Update}"`, () => {
@@ -96,34 +96,34 @@ describe('UserRouter', () => {
 
         it(`should return a status code of "${HttpStatusCodes.OK}" if the ` +
             'request was successful.', done => {
-                spyOn(UserRepo, 'update').and.resolveTo();
-                spyOn(UserRepo, 'persists').and.resolveTo(true);
+            spyOn(UserRepo, 'update').and.resolveTo();
+            spyOn(UserRepo, 'persists').and.resolveTo(true);
 
-                callApi(DUMMY_USER, res => {
-                    expect(res.status).toBe(HttpStatusCodes.OK);
-                    done();
-                });
+            callApi(DUMMY_USER, res => {
+                expect(res.status).toBe(HttpStatusCodes.OK);
+                done();
             });
+        });
 
         it(`should return a JSON object with an error message of "${ERROR_MSG}" ` +
             `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` +
             'param was missing.', done => {
-                callApi(null, res => {
-                    expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-                    expect(res.body.error).toBe(undefined);
-                    done();
-                });
+            callApi(null, res => {
+                expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
+                expect(res.body.error).toBe(undefined);
+                done();
             });
+        });
 
         it('should return a JSON object with the error message of ' +
             `"${USER_NOT_FOUND_ERR}" and a status code of ` +
             `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
-                callApi(DUMMY_USER, res => {
-                    expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-                    expect(res.body.error).toBe(undefined);
-                    done();
-                });
+            callApi(DUMMY_USER, res => {
+                expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
+                expect(res.body.error).toBe(undefined);
+                done();
             });
+        });
     });
 
     describe(`"DELETE:${Paths.Users.Delete}"`, () => {
@@ -134,23 +134,23 @@ describe('UserRouter', () => {
 
         it(`should return a status code of "${HttpStatusCodes.OK}" if the ` +
             'request was successful.', (done) => {
-                spyOn(UserRepo, 'delete').and.resolveTo();
-                spyOn(UserRepo, 'persists').and.resolveTo(true);
+            spyOn(UserRepo, 'delete').and.resolveTo();
+            spyOn(UserRepo, 'persists').and.resolveTo(true);
 
-                callApi(5, res => {
-                    expect(res.status).toBe(HttpStatusCodes.OK);
-                    done();
-                });
+            callApi(5, res => {
+                expect(res.status).toBe(HttpStatusCodes.OK);
+                done();
             });
+        });
 
         it('should return a JSON object with the error message of ' +
             `"${USER_NOT_FOUND_ERR}" and a status code of ` +
             `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, done => {
-                callApi(-1, res => {
-                    expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-                    expect(res.body.error).toBe(undefined);
-                    done();
-                });
+            callApi(-1, res => {
+                expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
+                expect(res.body.error).toBe(undefined);
+                done();
             });
+        });
     });
 });

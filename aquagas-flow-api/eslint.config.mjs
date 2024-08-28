@@ -43,18 +43,18 @@ export default [
         },
 
         rules: {
-            "@typescript-eslint/explicit-member-accessibility": "warn",
+            "@typescript-eslint/explicit-member-accessibility": "off",
             "@typescript-eslint/no-misused-promises": 0,
             "@typescript-eslint/no-floating-promises": 0,
-
+            "@typescript-eslint/no-empty-object-type": "off",
             "max-len": ["warn", {
-                code: 100,
+                code: 150,
             }],
 
             "comma-dangle": ["warn", "always-multiline"],
-            "no-console": 1,
+            "no-console": "off",
             "no-extra-boolean-cast": 0,
-            semi: 1,
+            semi: "off",
             indent: ["warn", 4],
             quotes: ["warn", "single"],
         },

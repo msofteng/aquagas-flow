@@ -5,7 +5,7 @@ import UserRoutes from '@src/routes/UserRoutes';
 
 const app = new App([
     new AuthRoutes(),
-    new UserRoutes()
+    new UserRoutes(),
 ]);
 
 app.listen();
