@@ -1,5 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 
+import '@src/pre-start';
+
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -17,8 +19,6 @@ import { RouteError } from '@src/common/classes';
 import { IReq, IRes } from '@src/routes/common/types';
 
 import 'express-async-errors';
-
-import '@src/pre-start';
 
 export default class App {
     public app: Application;
@@ -104,7 +104,14 @@ export default class App {
     }
 
     private initializeErrorHandling() {
-        // this.app.use(adminMw);
+        this.app.use((error: {name: string, message: string, stack?: string, status: number}, req: Request, res: Response, next: NextFunction) => {
+            try {
+                console.error(`[${req.method}] ${req.path} >> Message:: ${error.message}`);
+                res.status(error.status).json({ message: error.message });
+            } catch (error) {
+                next(error);
+            }
+        });
     }
 }
 
