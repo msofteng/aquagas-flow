@@ -1,0 +1,44 @@
+services:
+    db:
+        container_name: aquagas-flow-postgres
+        image: postgres:latest
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - 5432:5432
+    pgadmin:
+        container_name: aquagas-flow-pgadmin
+        image: dpage/pgadmin4:latest
+        environment:
+            PGADMIN_DEFAULT_EMAIL: pgadmin@pgadmin.com
+            PGADMIN_DEFAULT_PASSWORD: pgadmin
+        ports:
+            - 8080:80
+        volumes:
+            - ./servers.json:/pgadmin4/servers.json
+            - ./pgpass:/pgpass
+        depends_on:
+            - db
+    api:
+        container_name: aquagas-flow-api
+        build:
+            context: ./aquagas-flow-api
+        ports:
+            - 80:80
+        env_file: ./arquivo.env
+        depends_on:
+            - db
+    web:
+        container_name: aquagas-flow-web
+        build:
+            context: ./aquagas-flow-web
+        ports:
+            - 3000:3000
+    app:
+        container_name: aquagas-flow-app
+        build:
+            context: ./aquagas-flow-app
+        ports:
+            - 4000:4000
