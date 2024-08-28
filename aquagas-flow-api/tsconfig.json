@@ -12,6 +12,9 @@
             "@src/*": [
                 "src/*"
             ],
+            "@spec/*": [
+                "spec/*"
+            ],
         },
         "useUnknownInCatchVariables": false
     },

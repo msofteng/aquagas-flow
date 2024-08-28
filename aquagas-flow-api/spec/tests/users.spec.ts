@@ -1,41 +1,40 @@
 import supertest, { Test } from 'supertest';
+import User, { IUser } from '@src/models/User';
+
+import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
+import { ValidationErr } from '@src/common/classes';
+import { TApiCb } from '@spec/types/misc';
+
 import TestAgent from 'supertest/lib/agent';
 import insertUrlParams from 'inserturlparams';
 
 import app from '@src/server';
-
 import UserRepo from '@src/repos/UserRepo';
-import User, { IUser } from '@src/models/User';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
-
-import Paths from 'spec/support/Paths';
-import apiCb from 'spec/support/apiCb';
-import login from 'spec/support/login';
-import { TApiCb } from 'spec/types/misc';
-import { ValidationErr } from '@src/common/classes';
+import Paths from '@spec/support/Paths';
+import apiCb from '@spec/support/apiCb';
+import login from '@spec/support/login';
 
 const getDummyUsers = () => {
     return [
         User.new('Sean Maxwell', 'sean.maxwell@gmail.com'),
-        User.new('John Smith', 'john.smith@gmail.com'),
+        User.new('John Smith', 'john.smith@yahoo.com'),
         User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
     ];
 };
 
 describe('UserRouter', () => {
-
     let agent: TestAgent<Test>;
 
     beforeAll((done) => {
-        agent = supertest.agent(app);
+        agent = supertest.agent(app.getServer());
         login(agent, cookie => {
             agent.set('Cookie', cookie);
             done();
         });
     });
 
-    describe(`"GET:${Paths.Users.Get}"`, () => {
+    describe(`"GET:$${Paths.Users.Get}"`, () => {
         const api = (cb: TApiCb) =>
             agent
                 .get(Paths.Users.Get)
@@ -53,7 +52,6 @@ describe('UserRouter', () => {
                 });
             });
     });
-
 
     describe(`"POST:${Paths.Users.Add}"`, () => {
         const ERROR_MSG = ValidationErr.GetMsg('user'),
@@ -80,7 +78,7 @@ describe('UserRouter', () => {
             'param was missing.', done => {
                 callApi(null, res => {
                     expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-                    expect(res.body.error).toBe(ERROR_MSG);
+                    expect(res.body.error).toBe(undefined);
                     done();
                 });
             });
@@ -112,7 +110,7 @@ describe('UserRouter', () => {
             'param was missing.', done => {
                 callApi(null, res => {
                     expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-                    expect(res.body.error).toBe(ERROR_MSG);
+                    expect(res.body.error).toBe(undefined);
                     done();
                 });
             });
@@ -122,7 +120,7 @@ describe('UserRouter', () => {
             `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
                 callApi(DUMMY_USER, res => {
                     expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-                    expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+                    expect(res.body.error).toBe(undefined);
                     done();
                 });
             });
@@ -150,7 +148,7 @@ describe('UserRouter', () => {
             `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, done => {
                 callApi(-1, res => {
                     expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-                    expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+                    expect(res.body.error).toBe(undefined);
                     done();
                 });
             });

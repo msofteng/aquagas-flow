@@ -1,6 +1,7 @@
 import { IUser } from '@src/models/User';
 import { getRandomInt } from '@src/util/misc';
-import orm from './MockOrm';
+
+import orm from '@src/repos/MockOrm';
 
 async function getOne(email: string): Promise<IUser | null> {
     const db = await orm.openDb();

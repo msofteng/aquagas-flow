@@ -1,37 +1,35 @@
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
-
-import UserService from '@src/services/UserService';
-import User from '@src/models/User';
-
+import { NextFunction, Router } from 'express';
 import { IReq, IRes } from './common/types';
-import check from './common/check';
 
-async function getAll(_: IReq, res: IRes) {
-    const users = await UserService.getAll();
-    return res.status(HttpStatusCodes.OK).json({ users });
+import jetValidator from 'jet-validator';
+
+import Routes from '@src/interfaces/routes';
+import IValidate from '@src/interfaces/validate';
+import Paths from '@src/common/Paths';
+import UserController from '@src/controllers/user';
+import adminMw from '@src/routes/middleware/adminMw';
+
+export default class UserRoutes implements Routes {
+    path?: string | undefined;
+    router: Router;
+    validate: IValidate;
+    controller: UserController;
+    middleware: ((req: IReq, res: IRes, next: NextFunction) => Promise<void | IRes>);
+
+    constructor() {
+        this.path = Paths.Users.Base;
+        this.router = Router();
+        this.validate = jetValidator();
+        this.controller = new UserController();
+        this.middleware = adminMw;
+
+        this.initializeRoutes();
+    }
+
+    private initializeRoutes() {
+        this.router.get(`${this.path}${Paths.Users.Get}`, this.middleware, this.controller.getAll);
+        this.router.post(`${this.path}${Paths.Users.Add}`, this.middleware, this.controller.add);
+        this.router.put(`${this.path}${Paths.Users.Update}`, this.middleware, this.controller.update);
+        this.router.delete(`${this.path}${Paths.Users.Delete}`, this.middleware, this.controller.delete_);
+    }
 }
-
-async function add(req: IReq, res: IRes) {
-    const user = check.isValid(req.body, 'user', User.isUser);
-    await UserService.addOne(user);
-    return res.status(HttpStatusCodes.CREATED).end();
-}
-
-async function update(req: IReq, res: IRes) {
-    const user = check.isValid(req.body, 'user', User.isUser);
-    await UserService.updateOne(user);
-    return res.status(HttpStatusCodes.OK).end();
-}
-
-async function delete_(req: IReq, res: IRes) {
-    const id = check.isNum(req.params, 'id');
-    await UserService.delete(id);
-    return res.status(HttpStatusCodes.OK).end();
-}
-
-export default {
-    getAll,
-    add,
-    update,
-    delete: delete_,
-} as const;

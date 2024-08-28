@@ -1,6 +1,5 @@
 import { ValidationErr } from '@src/common/classes';
 
-
 type TReqObj = Record<string, unknown>;
 
 function isStr(reqObj: TReqObj, params: string): string;

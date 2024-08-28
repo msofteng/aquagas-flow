@@ -9,6 +9,12 @@ document.addEventListener('click', (event) => {
         };
         Http
             .post('/api/auth/login', data)
-            .then(() => (window.location.href = '/users'));
+            .then((data) => {
+                if (data.status == 200) {
+                    window.location.href = '/users';
+                } else {
+                    console.log(data);
+                }
+            });
     }
 }, false);

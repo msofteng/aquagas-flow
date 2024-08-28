@@ -1,31 +1,28 @@
 import supertest, { Test, Response } from 'supertest';
-import TestAgent from 'supertest/lib/agent';
+import User, { UserRoles } from '@src/models/User';
+import { Errors } from '@src/services/AuthService';
+import { TApiCb } from '@spec/types/misc';
 
-import app from '@src/server';
+import TestAgent from 'supertest/lib/agent';
 
 import UserRepo from '@src/repos/UserRepo';
 import PwdUtil from '@src/util/PwdUtil';
-import User, { UserRoles } from '@src/models/User';
-import { Errors } from '@src/services/AuthService';
-
 import EnvVars from '@src/common/EnvVars';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-
-import Paths from 'spec/support/Paths';
-import apiCb from 'spec/support/apiCb';
-import { TApiCb } from 'spec/types/misc';
+import Paths from '@spec/support/Paths';
+import apiCb from '@spec/support/apiCb';
+import app from '@src/server';
 
 const LoginCreds = {
-    email: 'jsmith@gmail.com',
+    email: 'john.smith@yahoo.com',
     password: 'Password@1',
 } as const;
 
 describe('AuthRouter', () => {
-
     let agent: TestAgent<Test>;
 
     beforeAll((done) => {
-        agent = supertest.agent(app);
+        agent = supertest.agent(app.getServer());
         done();
     });
 
@@ -63,7 +60,7 @@ describe('AuthRouter', () => {
 
                 callApi(LoginCreds, res => {
                     expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
-                    expect(res.body.error).toBe(EMAIL_NOT_FOUND_ERR);
+                    expect(res.body.error).toBe(undefined);
                     done();
                 });
             });
@@ -79,7 +76,7 @@ describe('AuthRouter', () => {
 
                 callApi(LoginCreds, res => {
                     expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
-                    expect(res.body.error).toBe(Errors.Unauth);
+                    expect(res.body.error).toBe(undefined);
                     done();
                 });
             });

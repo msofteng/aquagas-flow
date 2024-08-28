@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 import find from 'find';
 import Jasmine from 'jasmine';
-import { parse } from 'ts-command-line-args';
 import logger from 'jet-logger';
+
+import { parse } from 'ts-command-line-args';
 
 interface IArgs {
     testFile: string;
@@ -55,9 +56,9 @@ if (args.testFile) {
     if (!!execResp) {
         const info = await execResp;
         if (info.overallStatus === 'passed') {
-            logger.info('All tests have passed :)');
+            logger.info('Todos os testes passaram :)');
         } else {
-            logger.err('At least one test has failed :(');
+            logger.err('Pelo menos um teste falhou :(');
         }
     }
 })();

@@ -1,30 +1,38 @@
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import SessionUtil from '@src/util/SessionUtil';
-import AuthService from '@src/services/AuthService';
-import check from './common/check';
+import { Router } from 'express';
 
-import { IReq, IRes } from './common/types';
+import jetValidator from 'jet-validator';
 
-async function login(req: IReq, res: IRes) {
-    const [ email, password ] = check.isStr(req.body, ['email', 'password']),
-        user = await AuthService.login(email, password);
-    
-    await SessionUtil.addSessionData(res, {
-        id: user.id,
-        email: user.name,
-        name: user.name,
-        role: user.role,
-    });
-    
-    return res.status(HttpStatusCodes.OK).end();
+import Routes from '@src/interfaces/routes';
+import Paths from '@src/common/Paths';
+import AuthController from '@src/controllers/auth';
+import IValidate from '@src/interfaces/validate';
+
+export default class AuthRoutes implements Routes {
+    path?: string;
+    router: Router;
+    validate: IValidate;
+    controller: AuthController;
+
+    constructor() {
+        this.path = Paths.Auth.Base;
+        this.router = Router();
+        this.validate = jetValidator();
+        this.controller = new AuthController();
+
+        this.initializeRoutes();
+    }
+
+    private initializeRoutes() {
+        this.router.post(
+            `${this.path}${Paths.Auth.Login}`,
+            this.validate('email', 'password'),
+            this.controller.login
+        );
+
+        this.router.get(
+            `${this.path}${Paths.Auth.Logout}`,
+            this.controller.logout
+        );
+    }
 }
 
-function logout(_: IReq, res: IRes) {
-    SessionUtil.clearCookie(res);
-    return res.status(HttpStatusCodes.OK).end();
-}
-
-export default {
-    login,
-    logout,
-} as const;

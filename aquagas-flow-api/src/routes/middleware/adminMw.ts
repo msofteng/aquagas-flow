@@ -1,11 +1,10 @@
 import { NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
+import { ISessionUser, UserRoles } from '@src/models/User';
+import { IReq, IRes } from '../common/types';
 
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import SessionUtil from '@src/util/SessionUtil';
-import { ISessionUser, UserRoles } from '@src/models/User';
-
-import { IReq, IRes } from '../common/types';
 
 const USER_UNAUTHORIZED_ERR = 'User not authorized to perform this action';
 

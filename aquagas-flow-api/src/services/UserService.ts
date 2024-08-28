@@ -1,7 +1,7 @@
-import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-
 import UserRepo from '@src/repos/UserRepo';
+
+import { RouteError } from '@src/common/classes';
 import { IUser } from '@src/models/User';
 
 export const USER_NOT_FOUND_ERR = 'User not found';

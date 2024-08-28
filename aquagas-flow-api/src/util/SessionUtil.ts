@@ -1,8 +1,10 @@
 import jsonwebtoken from 'jsonwebtoken';
 
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { RouteError } from '@src/common/classes';
+
 import EnvVars from '@src/common/EnvVars';
+import { RouteError } from '@src/common/classes';
+
 import { IReq, IRes } from '@src/routes/common/types';
 
 const Errors = {

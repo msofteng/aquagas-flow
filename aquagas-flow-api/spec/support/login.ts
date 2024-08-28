@@ -4,8 +4,7 @@ import TestAgent from 'supertest/lib/agent';
 import User, { UserRoles } from '@src/models/User';
 import UserRepo from '@src/repos/UserRepo';
 import PwdUtil from '@src/util/PwdUtil';
-
-import Paths from './Paths';
+import Paths from '@spec/support/Paths';
 
 const LoginCreds = {
     email: 'jsmith@gmail.com',

@@ -1,8 +1,8 @@
+import { TApiCb, TRes } from '@spec/types/misc';
 import { CallbackHandler } from 'supertest';
+
 import moment from 'moment';
 import logger from 'jet-logger';
-
-import { TApiCb, TRes } from 'spec/types/misc';
 
 function apiCb(
     cb: TApiCb,
