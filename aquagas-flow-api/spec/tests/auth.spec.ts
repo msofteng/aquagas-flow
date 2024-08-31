@@ -1,22 +1,24 @@
 import supertest, { Test, Response } from 'supertest';
 import User, { UserRoles } from '@src/models/User';
-import { Errors } from '@src/services/AuthService';
+import { Errors } from '@src/services/auth';
 import { TApiCb } from '@spec/types/misc';
 
 import TestAgent from 'supertest/lib/agent';
 
-import UserRepo from '@src/repos/UserRepo';
 import PwdUtil from '@src/util/PwdUtil';
 import EnvVars from '@src/common/EnvVars';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import Paths from '@spec/support/Paths';
 import apiCb from '@spec/support/apiCb';
 import app from '@src/server';
+import UserRepository from '@src/repos/repo';
 
 const LoginCreds = {
     email: 'john.smith@yahoo.com',
     password: 'Password@1',
 } as const;
+
+const UserRepo = new UserRepository();
 
 describe('AuthRouter', () => {
     let agent: TestAgent<Test>;

@@ -2,14 +2,16 @@ import { Test, Response } from 'supertest';
 import TestAgent from 'supertest/lib/agent';
 
 import User, { UserRoles } from '@src/models/User';
-import UserRepo from '@src/repos/UserRepo';
 import PwdUtil from '@src/util/PwdUtil';
 import Paths from '@spec/support/Paths';
+import UserRepository from '@src/repos/repo';
 
 const LoginCreds = {
     email: 'jsmith@gmail.com',
     password: 'Password@1',
 } as const;
+
+const UserRepo = new UserRepository();
 
 function login(beforeAgent: TestAgent<Test>, done: (arg: string) => void) {
     const role = UserRoles.Admin,

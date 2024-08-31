@@ -1,7 +1,7 @@
 import supertest, { Test } from 'supertest';
 import User, { IUser } from '@src/models/User';
 
-import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
+import { USER_NOT_FOUND_ERR } from '@src/services/user';
 import { ValidationErr } from '@src/common/classes';
 import { TApiCb } from '@spec/types/misc';
 
@@ -9,11 +9,11 @@ import TestAgent from 'supertest/lib/agent';
 import insertUrlParams from 'inserturlparams';
 
 import app from '@src/server';
-import UserRepo from '@src/repos/UserRepo';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import Paths from '@spec/support/Paths';
 import apiCb from '@spec/support/apiCb';
 import login from '@spec/support/login';
+import UserRepository from '@src/repos/repo';
 
 const getDummyUsers = () => {
     return [
@@ -22,6 +22,8 @@ const getDummyUsers = () => {
         User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
     ];
 };
+
+const UserRepo = new UserRepository();
 
 describe('UserRouter', () => {
     let agent: TestAgent<Test>;
@@ -134,7 +136,7 @@ describe('UserRouter', () => {
 
         it(`should return a status code of "${HttpStatusCodes.OK}" if the ` +
             'request was successful.', (done) => {
-            spyOn(UserRepo, 'delete').and.resolveTo();
+            spyOn(UserRepo, 'delete_').and.resolveTo();
             spyOn(UserRepo, 'persists').and.resolveTo(true);
 
             callApi(5, res => {
