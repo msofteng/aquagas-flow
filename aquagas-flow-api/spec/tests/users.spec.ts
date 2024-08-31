@@ -1,5 +1,5 @@
 import supertest, { Test } from 'supertest';
-import User, { IUser } from '@src/models/User';
+import User, { IUser } from '@src/models/user';
 
 import { USER_NOT_FOUND_ERR } from '@src/services/user';
 import { ValidationErr } from '@src/common/classes';
@@ -13,7 +13,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import Paths from '@spec/support/Paths';
 import apiCb from '@spec/support/apiCb';
 import login from '@spec/support/login';
-import UserRepository from '@src/repos/repo';
+import UserRepository from '@src/repos/user';
 
 const getDummyUsers = () => {
     return [

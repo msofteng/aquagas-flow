@@ -8,7 +8,7 @@ import AuthController from '@src/controllers/auth';
 import IValidate from '@src/interfaces/validate';
 
 export default class AuthRoutes implements Routes {
-    path?: string;
+    path: string;
     router: Router;
     validate: IValidate;
     controller: AuthController;

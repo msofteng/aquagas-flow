@@ -1,8 +1,8 @@
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import UserRepository from '@src/repos/repo';
+import UserRepository from '@src/repos/user';
 
 import { RouteError } from '@src/common/classes';
-import { IUser } from '@src/models/User';
+import { IUser } from '@src/models/user';
 
 export const USER_NOT_FOUND_ERR = 'User not found';
 

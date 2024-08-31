@@ -1,10 +1,10 @@
-import UserRepository from '@src/repos/repo';
+import UserRepository from '@src/repos/user';
 import PwdUtil from '@src/util/PwdUtil';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import { tick } from '@src/util/misc';
 import { RouteError } from '@src/common/classes';
-import { IUser } from '@src/models/User';
+import { IUser } from '@src/models/user';
 
 
 export const Errors = {

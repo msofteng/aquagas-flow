@@ -1,5 +1,5 @@
 export default {
-    Base: '/api',
+    Base: '',
     Auth: {
         Base: '/auth',
         Login: '/login',
@@ -11,5 +11,11 @@ export default {
         Add: '/add',
         Update: '/update',
         Delete: '/delete/:id',
+    },
+    Aquagas: {
+        Base: '',
+        Upload: '/upload',
+        Confirm: '/confirm',
+        List: '/list'
     },
 } as const;

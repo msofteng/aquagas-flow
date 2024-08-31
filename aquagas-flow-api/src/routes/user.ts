@@ -10,7 +10,7 @@ import UserController from '@src/controllers/user';
 import adminMw from '@src/routes/middleware/adminMw';
 
 export default class UserRoutes implements Routes {
-    path?: string | undefined;
+    path: string | undefined;
     router: Router;
     validate: IValidate;
     controller: UserController;

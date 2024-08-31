@@ -8,7 +8,7 @@ document.addEventListener('click', (event) => {
             password: pwdInput.value,
         };
         Http
-            .post('/api/auth/login', data)
+            .post('/auth/login', data)
             .then((data) => {
                 if (data.status == 200) {
                     window.location.href = '/users';

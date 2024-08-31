@@ -10,7 +10,7 @@ displayUsers();
 
 function displayUsers() {
     Http
-        .get('/api/users/all')
+        .get('/users/all')
         .then(resp => resp.json())
         .then(resp => {
             var allUsersTemplate = document.getElementById('all-users-template'),
@@ -57,7 +57,7 @@ function addUser() {
     };
 
     Http
-        .post('/api/users/add', data)
+        .post('/users/add', data)
         .then(() => {
             nameInput.value = '';
             emailInput.value = '';
@@ -95,19 +95,19 @@ function submitEdit(ele) {
         },
     };
     Http
-        .put('/api/users/update', data)
+        .put('/users/update', data)
         .then(() => displayUsers());
 }
 
 function deleteUser(ele) {
     var id = ele.getAttribute('data-user-id');
     Http
-        .delete('/api/users/delete/' + id)
+        .delete('/users/delete/' + id)
         .then(() => displayUsers());
 }
 
 function logoutUser() {
     Http
-        .get('/api/auth/logout')
+        .get('/auth/logout')
         .then(() => window.location.href = '/');
 }

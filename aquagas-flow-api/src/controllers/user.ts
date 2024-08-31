@@ -1,6 +1,6 @@
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import UserService from '@src/services/user';
-import User from '@src/models/User';
+import User from '@src/models/user';
 import check from '@src/routes/common/check';
 import IController from '@src/interfaces/controller';
 

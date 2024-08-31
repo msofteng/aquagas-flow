@@ -1,5 +1,5 @@
 import { Response } from 'supertest';
-import { IUser } from '@src/models/User';
+import { IUser } from '@src/models/user';
 
 export type TReqBody = Record<string, unknown>;
 export type TRes = Omit<Response, 'body'> & { body: TBody };

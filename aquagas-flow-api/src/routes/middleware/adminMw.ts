@@ -1,6 +1,6 @@
 import { NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
-import { ISessionUser, UserRoles } from '@src/models/User';
+import { ISessionUser, UserRoles } from '@src/models/user';
 import { IReq, IRes } from '../common/types';
 
 import HttpStatusCodes from '@src/common/HttpStatusCodes';

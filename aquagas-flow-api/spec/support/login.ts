@@ -1,10 +1,10 @@
 import { Test, Response } from 'supertest';
 import TestAgent from 'supertest/lib/agent';
 
-import User, { UserRoles } from '@src/models/User';
+import User, { UserRoles } from '@src/models/user';
 import PwdUtil from '@src/util/PwdUtil';
 import Paths from '@spec/support/Paths';
-import UserRepository from '@src/repos/repo';
+import UserRepository from '@src/repos/user';
 
 const LoginCreds = {
     email: 'jsmith@gmail.com',

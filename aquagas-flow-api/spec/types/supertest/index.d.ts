@@ -1,6 +1,6 @@
 import 'supertest';
 
-import { IUser } from '@src/models/User';
+import { IUser } from '@src/models/user';
 
 declare module 'supertest' {
     export interface Response {

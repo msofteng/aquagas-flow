@@ -1,5 +1,5 @@
 import supertest, { Test, Response } from 'supertest';
-import User, { UserRoles } from '@src/models/User';
+import User, { UserRoles } from '@src/models/user';
 import { Errors } from '@src/services/auth';
 import { TApiCb } from '@spec/types/misc';
 
@@ -11,7 +11,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import Paths from '@spec/support/Paths';
 import apiCb from '@spec/support/apiCb';
 import app from '@src/server';
-import UserRepository from '@src/repos/repo';
+import UserRepository from '@src/repos/user';
 
 const LoginCreds = {
     email: 'john.smith@yahoo.com',
