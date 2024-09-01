@@ -46,7 +46,7 @@ export default class AquagasRepository {
         const db = await this.orm.openDb();
         for (const meas of db) {
             if (
-                moment(meas.measure_datetime).format('mm/yyyy') == moment(measure.measure_datetime).format('mm/yyyy') &&
+                moment(meas.measure_datetime).format('MM/YYYY') == moment(measure.measure_datetime).format('MM/YYYY') &&
                 meas.measure_type == measure.measure_type &&
                 meas.customer_code == measure.customer_code
             ) {
