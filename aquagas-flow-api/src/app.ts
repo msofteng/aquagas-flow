@@ -39,7 +39,7 @@ export default class App {
         this.app.listen(this.port, () => {
             console.info('===================================');
             console.info(`======== ENV: ${this.env} =========`);
-            console.info(`🚀 Aplicativo rodando na porta ${this.port}`);
+            console.info(`Aplicativo rodando na porta ${this.port}`);
             console.info('===================================');
         });
     }
@@ -49,7 +49,7 @@ export default class App {
     }
 
     private initializeMiddlewares() {
-        this.app.use(express.json());
+        this.app.use(express.json({ limit: '2048mb' }));
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cookieParser(EnvVars.CookieProps.Secret));
 

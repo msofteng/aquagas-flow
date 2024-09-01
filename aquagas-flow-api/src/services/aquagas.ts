@@ -5,10 +5,12 @@ import { IReq, IRes } from "@src/routes/common/types";
 import { getRandomInt } from "@src/util/misc";
 import moment from "moment";
 import sharp from "sharp";
+import GoogleGeminiService from "./google-gemini";
+import { GEMINI_API_KEY } from "@src/config";
 
 async function isMeasure(arg: object): Promise<boolean> {
     const isBase64Image = async (str: string): Promise<boolean> => {
-        const base64UriPattern = /^data:image\/(jpeg|png|gif|bmp|webp);base64,/;
+        const base64UriPattern = /^data:image\/(jpeg|jpg|png|gif);base64,/;
         const base64PurePattern = /^[A-Za-z0-9+/]+[=]{0,2}$/;
 
         let base64Data = str;
@@ -18,7 +20,7 @@ async function isMeasure(arg: object): Promise<boolean> {
             mimeType = (str.match(/data:([^;]+);base64,/) ?? '')[1];
             base64Data = str.split(',')[1];
         } else if (base64PurePattern.test(str)) {
-            mimeType = 'application/octet-stream';
+            mimeType = 'image/jpg';
         } else {
             return false;
         }
@@ -68,9 +70,11 @@ const error: IErrorMeasure = {
 
 export default class AquagasFlowService {
     repository: AquagasRepository;
+    geminiAiService: GoogleGeminiService;
 
     constructor () {
         this.repository = new AquagasRepository();
+        this.geminiAiService = new GoogleGeminiService(GEMINI_API_KEY);
     }
 
     async salvarMedicao(req: IReq, res: IRes): Promise<IRes> {
@@ -85,14 +89,16 @@ export default class AquagasFlowService {
             let measure: IMeasure = {
                 measure_uuid: getRandomInt().toString(),
                 measure_datetime: request.measure_datetime,
-                measure_value: 100,
+                measure_value: 0,
                 measure_type: request.measure_type,
                 has_confirmed: false,
-                image_url: "http://",
+                image_url: "http://", // falta esse
                 customer_code: request.customer_code
             };
 
             if (!(await this.repository.persists(measure))) {
+                measure.measure_value = Number((await this.geminiAiService.extractText(request.image, measure.measure_type)).match(/[\d,.]+/)![0].replace(",", "."));
+
                 this.repository.add(measure);
 
                 response = {
