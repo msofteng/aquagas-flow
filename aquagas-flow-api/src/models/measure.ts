@@ -34,9 +34,11 @@ export interface IResMeasureConfirm {
 export interface IMeasure {
     measure_uuid: string;
     measure_datetime: string;
+    measure_value: number;
     measure_type: "WATER" | "GAS";
     has_confirmed: boolean;
     image_url: string;
+    customer_code: string;
 }
 
 export interface IResMeasureList {

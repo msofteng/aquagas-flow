@@ -1,7 +1,8 @@
 import HttpStatusCodes from "@src/common/HttpStatusCodes";
-import { IErrorMeasure, IReqMeasureConfirm } from "@src/models/measure";
+import { IErrorMeasure, IMeasure, IReqMeasure, IReqMeasureConfirm } from "@src/models/measure";
 import AquagasRepository from "@src/repos/aquagas";
 import { IReq, IRes } from "@src/routes/common/types";
+import { getRandomInt } from "@src/util/misc";
 import moment from "moment";
 import sharp from "sharp";
 
@@ -65,11 +66,52 @@ export default class AquagasFlowService {
     }
 
     async salvarMedicao(req: IReq, res: IRes): Promise<IRes> {
+        let response = {
+            status: 0,
+            body: {}
+        };
+
         if (await isMeasure(req.body)) {
-            return res.status(HttpStatusCodes.OK).json({});
+            let request = req.body as unknown as IReqMeasure;
+
+            let measure: IMeasure = {
+                measure_uuid: getRandomInt().toString(),
+                measure_datetime: request.measure_datetime,
+                measure_value: 100,
+                measure_type: request.measure_type,
+                has_confirmed: false,
+                image_url: "http://",
+                customer_code: request.customer_code
+            };
+
+            if (!(await this.repository.persists(measure))) {
+                this.repository.add(measure);
+
+                response = {
+                    status: HttpStatusCodes.OK,
+                    body: {
+                        image_url: measure.image_url,
+                        measure_value: measure.measure_value,
+                        measure_uuid: measure.measure_uuid
+                    }
+                };
+            } else {
+                response = {
+                    status: HttpStatusCodes.CONFLICT,
+                    body: {
+                        error_code: "DOUBLE_REPORT",
+                        error_description: "Leitura do mês já realizada"
+                    }
+                };
+            }
         } else {
-            return res.status(HttpStatusCodes.BAD_REQUEST).json(error);
+            response = {
+                status: HttpStatusCodes.BAD_REQUEST,
+                body: error
+            };
         }
+
+        return res.status(response.status).json(response.body);
     }
 
     confirmarMedicao(req: IReq, res: IRes): IRes {

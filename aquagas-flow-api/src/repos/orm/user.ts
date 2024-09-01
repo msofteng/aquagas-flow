@@ -17,5 +17,5 @@ export default class UserOrm {
 
     saveDb(db: IDb): Promise<void> {
         return jsonfile.writeFile((__dirname + '/' + DB_FILE_NAME), db);
-    }    
+    }
 }

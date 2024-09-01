@@ -1,0 +1,20 @@
+[
+    {
+        "measure_uuid": "822665183160",
+        "measure_datetime": "2024-08-31T17:50:00.000Z",
+        "measure_value": 100,
+        "measure_type": "WATER",
+        "has_confirmed": false,
+        "image_url": "http://",
+        "customer_code": "1"
+    },
+    {
+        "measure_uuid": "773322901384",
+        "measure_datetime": "2024-08-31T17:50:00.000Z",
+        "measure_value": 100,
+        "measure_type": "GAS",
+        "has_confirmed": false,
+        "image_url": "http://",
+        "customer_code": "1"
+    }
+]
