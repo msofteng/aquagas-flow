@@ -11,9 +11,9 @@
     {
         "measure_uuid": "773322901384",
         "measure_datetime": "2024-08-31T17:50:00.000Z",
-        "measure_value": 100,
+        "measure_value": 45847,
         "measure_type": "GAS",
-        "has_confirmed": false,
+        "has_confirmed": true,
         "image_url": "http://",
         "customer_code": "1"
     }

@@ -114,12 +114,51 @@ export default class AquagasFlowService {
         return res.status(response.status).json(response.body);
     }
 
-    confirmarMedicao(req: IReq, res: IRes): IRes {
+    async confirmarMedicao(req: IReq, res: IRes): Promise<IRes> {
+        let response = {
+            status: 0,
+            body: {}
+        };
+
         if (isMeasureConfirm(req.body)) {
-            return res.status(HttpStatusCodes.OK).json({});
+            let medicao = await this.repository.get(req.body.measure_uuid);
+
+            if (medicao) {
+                if (!medicao.has_confirmed) {
+                    this.repository.update(medicao.measure_uuid, req.body.confirmed_value);
+
+                    response = {
+                        status: HttpStatusCodes.OK,
+                        body: {
+                            success: true
+                        }
+                    }
+                } else {
+                    response = {
+                        status: HttpStatusCodes.CONFLICT,
+                        body: {
+                            error_code: "CONFIRMATION_DUPLICATE",
+                            error_description: "Leitura do mês já realizada"
+                        }
+                    }
+                }
+            } else {
+                response = {
+                    status: HttpStatusCodes.NOT_FOUND,
+                    body: {
+                        error_code: "MEASURE_NOT_FOUND",
+                        error_description: "Leitura do mês já realizada"
+                    }
+                }
+            }
         } else {
-            return res.status(HttpStatusCodes.BAD_REQUEST).json(error);
+            response = {
+                status: HttpStatusCodes.BAD_REQUEST,
+                body: error
+            };
         }
+
+        return res.status(response.status).json(response.body);
     }
 
     listarMedidas(req: IReq, res: IRes): IRes {

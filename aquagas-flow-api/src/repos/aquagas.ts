@@ -15,6 +15,12 @@ export default class AquagasRepository {
         return db;
     }
 
+    async get(measureUuid: string): Promise<IMeasure | undefined> {
+        const db = await this.orm.openDb();
+
+        return db.find((measure) => measure.measure_uuid == measureUuid);
+    }
+
     async add(measure: IMeasure): Promise<void> {
         const db = await this.orm.openDb();
         db.push(measure);
@@ -54,8 +60,7 @@ export default class AquagasRepository {
         const db = await this.orm.openDb();
         for (const meas of db) {
             if (
-                meas.measure_uuid == measure.measure_uuid &&
-                meas.has_confirmed
+                meas.measure_uuid == measure.measure_uuid
             ) {
                 return true;
             }
