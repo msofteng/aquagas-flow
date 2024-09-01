@@ -53,6 +53,14 @@ function isMeasureConfirm(arg: object): arg is IReqMeasureConfirm {
     );
 }
 
+function isMeasureSearch(arg: object): boolean {
+    return (
+        !!arg &&
+        typeof arg === 'object' &&
+        'measure_type' in arg && typeof arg.measure_type === 'string'
+    );
+}
+
 const error: IErrorMeasure = {
     error_code: 'INVALID_DATA',
     error_description: 'Os dados fornecidos no corpo da requisição são inválidos'
@@ -161,7 +169,74 @@ export default class AquagasFlowService {
         return res.status(response.status).json(response.body);
     }
 
-    listarMedidas(req: IReq, res: IRes): IRes {
-        return res.json({});
+    async listarMedidas(req: IReq, res: IRes): Promise<IRes> {
+        let response = {
+            status: 0,
+            body: {}
+        };
+
+        const medidas = await this.repository.getAll();
+
+        let medidasFiltradas = [];
+
+        if (req.query && isMeasureSearch(req.query)) {
+            if (`${req.query.measure_type}`.toUpperCase() == 'WATER' || `${req.query.measure_type}`.toUpperCase() == 'GAS') {
+                medidasFiltradas = medidas.filter(meas => meas.customer_code == req.params.id && meas.measure_type.toLowerCase() == `${req.query.measure_type}`.toLowerCase()).map((measure) => {
+                    return {
+                        measure_uuid: measure.measure_uuid,
+                        measure_datetime: measure.measure_datetime,
+                        measure_type: measure.measure_type,
+                        has_confirmed: measure.has_confirmed,
+                        image_url: measure.image_url
+                    }
+                });
+
+                response = {
+                    status: HttpStatusCodes.OK,
+                    body: {
+                        customer_code: req.params.id,
+                        measures: medidasFiltradas
+                    }
+                };
+            } else {
+                response = {
+                    status: HttpStatusCodes.BAD_REQUEST,
+                    body: {
+                        error_code: "INVALID_TYPE",
+                        error_description: "Tipo de medição não permitida"
+                    }
+                };
+            }
+        } else {
+            medidasFiltradas = medidas.filter(meas => meas.customer_code == req.params.id).map((measure) => {
+                return {
+                    measure_uuid: measure.measure_uuid,
+                    measure_datetime: measure.measure_datetime,
+                    measure_type: measure.measure_type,
+                    has_confirmed: measure.has_confirmed,
+                    image_url: measure.image_url
+                }
+            });
+
+            response = {
+                status: HttpStatusCodes.OK,
+                body: {
+                    customer_code: req.params.id,
+                    measures: medidasFiltradas
+                }
+            };
+        }
+
+        if (medidasFiltradas.length == 0 && response.status != HttpStatusCodes.BAD_REQUEST) {
+            response = {
+                status: HttpStatusCodes.NOT_FOUND,
+                body: {
+                    error_code: "MEASURES_NOT_FOUND",
+                    error_description: "Nenhuma leitura encontrada"
+                }
+            };
+        }
+
+        return res.status(response.status).json(response.body);
     }
 }
