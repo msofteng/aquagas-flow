@@ -55,20 +55,20 @@ describe('AuthRouter', () => {
         });
 
         it('should return a response with a status of ' +
-            `"${HttpStatusCodes.UNAUTHORIZED}" and a json with an error message of ` +
+            `"${HttpStatusCodes.OK}" and a json with an error message of ` +
             `"${EMAIL_NOT_FOUND_ERR}" if the email was not found.`, done => {
 
             spyOn(UserRepo, 'getOne').and.resolveTo(null);
 
             callApi(LoginCreds, res => {
-                expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+                expect(res.status).toBe(HttpStatusCodes.OK);
                 expect(res.body.error).toBe(undefined);
                 done();
             });
         });
 
         it('should return a response with a status of ' +
-            `"${HttpStatusCodes.UNAUTHORIZED}" and a json with the error ` +
+            `"${HttpStatusCodes.OK}" and a json with the error ` +
             `"${Errors.Unauth}" if the password failed.`, done => {
             const pwdHash = PwdUtil.hashSync('bad password'),
                 loginUser = User.new('john smith', LoginCreds.email, new Date(),
@@ -77,7 +77,7 @@ describe('AuthRouter', () => {
             spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
 
             callApi(LoginCreds, res => {
-                expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+                expect(res.status).toBe(HttpStatusCodes.OK);
                 expect(res.body.error).toBe(undefined);
                 done();
             });

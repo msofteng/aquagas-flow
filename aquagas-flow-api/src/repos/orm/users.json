@@ -15,24 +15,6 @@
             "role": 0,
             "id": 357437875835,
             "created": "2024-03-22T05:20:55.079Z"
-        },
-        {
-            "id": 881132017696,
-            "name": "Pedro",
-            "email": "pedro2@gmail.com",
-            "created": "2024-08-28T10:42:07.104Z"
-        },
-        {
-            "id": 180672095327,
-            "name": "Mateus",
-            "email": "mateus@outlook.com",
-            "created": "2024-08-31T23:12:38.381Z"
-        },
-        {
-            "id": 172306201218,
-            "name": "",
-            "email": "mateus@gmail.com",
-            "created": "2024-08-31T23:13:13.088Z"
         }
     ]
 }

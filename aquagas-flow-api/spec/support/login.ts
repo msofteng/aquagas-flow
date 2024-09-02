@@ -7,7 +7,7 @@ import Paths from '@spec/support/Paths';
 import UserRepository from '@src/repos/user';
 
 const LoginCreds = {
-    email: 'jsmith@gmail.com',
+    email: 'john.smith@yahoo.com',
     password: 'Password@1',
 } as const;
 
