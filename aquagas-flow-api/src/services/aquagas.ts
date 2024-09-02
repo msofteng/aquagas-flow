@@ -6,7 +6,10 @@ import { getRandomInt } from "@src/util/misc";
 import moment from "moment";
 import sharp from "sharp";
 import GoogleGeminiService from "./google-gemini";
-import { GEMINI_API_KEY } from "@src/config";
+
+import { FREEIMAGE_API_KEY, GEMINI_API_KEY } from "@src/config";
+import FreeImageService from "./free-image";
+import { IFreeImageResponse } from "@src/models/freeimage";
 
 async function isMeasure(arg: object): Promise<boolean> {
     const isBase64Image = async (str: string): Promise<boolean> => {
@@ -71,10 +74,12 @@ const error: IErrorMeasure = {
 export default class AquagasFlowService {
     repository: AquagasRepository;
     geminiAiService: GoogleGeminiService;
+    freeImageService: FreeImageService;
 
     constructor () {
         this.repository = new AquagasRepository();
         this.geminiAiService = new GoogleGeminiService(GEMINI_API_KEY);
+        this.freeImageService = new FreeImageService(FREEIMAGE_API_KEY);
     }
 
     async salvarMedicao(req: IReq, res: IRes): Promise<IRes> {
@@ -92,12 +97,18 @@ export default class AquagasFlowService {
                 measure_value: 0,
                 measure_type: request.measure_type,
                 has_confirmed: false,
-                image_url: "http://", // falta esse
+                image_url: "",
                 customer_code: request.customer_code
             };
 
             if (!(await this.repository.persists(measure))) {
                 measure.measure_value = Number((await this.geminiAiService.extractText(request.image, measure.measure_type)).match(/[\d,.]+/)![0].replace(",", "."));
+
+                let foto: IFreeImageResponse = await this.freeImageService.sendImage(request.image);
+
+                if (foto.success) {
+                    measure.image_url = foto.image!.url;
+                }
 
                 this.repository.add(measure);
 
